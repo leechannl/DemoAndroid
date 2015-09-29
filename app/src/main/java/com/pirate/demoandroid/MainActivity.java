@@ -1,30 +1,46 @@
 package com.pirate.demoandroid;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-  private ImageView image;
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    image = (ImageView) findViewById(R.id.image);
 
-    image.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Animation anim = new MyAnimation(image, 100, 180);
-        anim.setDuration(3000);
-        image.startAnimation(anim);
+    ArrayList<String> items = new ArrayList<>();
+    items.add("Circle Path Animation");
+    items.add("Battery Usage");
+
+    ArrayAdapter<String> adapter =
+        new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+    ListView listView = (ListView) findViewById(R.id.mainListView);
+    listView.setAdapter(adapter);
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+          case 0: {
+            Intent intent = new Intent(MainActivity.this, CirclePathAnimationActivity.class);
+            startActivity(intent);
+            break;
+          }
+          case 1: {
+            Intent intent = new Intent(MainActivity.this, BatteryUsageActivity.class);
+            startActivity(intent);
+            break;
+          }
+          default:
+            break;
+        }
       }
     });
   }
-
 }
 
